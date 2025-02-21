@@ -1,4 +1,4 @@
-from tinyscpi import scpi_functional as sf
+import scpi_functional as sf
 
 SCPILookUpTable = {
     # Standard SCPI Commands
@@ -108,6 +108,7 @@ SCPILookUpTable = {
     'MARK:RST': 'marker off',
 
     # MEASure subsystem
+    'MEAS:OFF': (lambda obj, args: sf.SCPI_functional.MEASure_OFF(obj, args)),
     'MEAS:HARM': (lambda obj, args: sf.SCPI_functional.MEASure_HARMonic(obj, args)),
     'MEAS:OIP3': (lambda obj, args: sf.SCPI_functional.MEASure_OIP3(obj, args)),
     'MEAS:PNOIS': (lambda obj, args: sf.SCPI_functional.MEASure_PhaseNOISe(obj, args)),
@@ -118,6 +119,7 @@ SCPILookUpTable = {
     'MEAS:THD': (lambda obj, args: sf.SCPI_functional.MEASure_THD(obj, args)),
     'MEAS:CHPOW': (lambda obj, args: sf.SCPI_functional.MEASure_CHPOW(obj, args)),
     'MEAS:LINE': (lambda obj, args: sf.SCPI_functional.MEASure_LINEar(obj, args)),
+    'MEAS:NFIG:MTNF': (lambda obj, args: sf.SCPI_functional.MEASure_tinySA_NF(obj, args)),
     'MEAS:DUMP': 'data',
 
     # CONFig subsystem

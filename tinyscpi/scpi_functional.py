@@ -1,9 +1,9 @@
 import struct
 import sys
 import time
-from . import helpers
+import helpers
 from datetime import datetime
-from .dictionaries import digit_mappings_dict
+from dictionaries import digit_mappings_dict
 
 import numpy
 import numpy as np
@@ -22,8 +22,8 @@ class SCPI_functional:
         self.lf = b'\n'
         self.crlf = self.cr + self.lf
         self.prompt = b'ch> '
-        self.screen_width = 320
-        self.screen_height = 240
+        self.screen_width = 480
+        self.screen_height = 320
         self.device_name = "TinySA"
 
     '''
@@ -45,7 +45,7 @@ class SCPI_functional:
     desc: Create tinySA usb command, given the valid command and arguments.
     '''
     def convert_scpi_to_usb(self, command: str, args: list):
-        from .dictionaries import scpi_lookup_dict
+        from dictionaries import scpi_lookup_dict
         usb_cmd = scpi_lookup_dict.SCPILookUpTable[command]
 
         if callable(usb_cmd):
@@ -181,11 +181,11 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:HARMonic
     '''
     def MEASure_OFF(self, args):
-        self.send('touch 300 100')
+        self.send('touch 420 220')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 420 220')
         self.send('release')
-        self.send('touch 320 10')
+        self.send('touch 420 10')
         self.send('release')
 
     '''
@@ -313,6 +313,23 @@ class SCPI_functional:
         self.send('release')
         self.send('touch 320 150')
         self.send('release')
+        
+    '''
+    desc: pseudo-command function for MEASure:LINEar
+    '''
+    def MEASure_tinySA_NF(self, args):
+        self.send('touch 300 100')
+        self.send('release')
+        self.send('touch 320 160')
+        self.send('release')
+        self.send('touch 320 180')
+        self.send('release')
+        self.send('touch 320 190')
+        self.send('release')
+        self.send('touch 320 10')
+        self.send('release')
+        print(self._enter_digits_on_screen(args))
+
 
     '''
     desc: pseudo-command function for MEASure:LINEar

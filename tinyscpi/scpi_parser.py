@@ -1,8 +1,8 @@
 import string
 
-from .dictionaries import scpi_cmds_mapped_to_funcs_dict
-from .dictionaries import scpi_lookup_dict as scpi_lookup_dict
-from .dictionaries import scpi_valid_dict as scpi_valid_dict
+from dictionaries import scpi_cmds_mapped_to_funcs_dict
+from dictionaries import scpi_lookup_dict as scpi_lookup_dict
+from dictionaries import scpi_valid_dict as scpi_valid_dict
 
 
 class SCPI_Parser:

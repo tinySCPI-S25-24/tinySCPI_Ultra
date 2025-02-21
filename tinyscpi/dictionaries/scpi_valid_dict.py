@@ -122,6 +122,7 @@ validCommandTable = {
                      'MARK:DIFF:OFF': [['int', 1, 4]],
 
                      # MEASure Subsystem
+                    'MEAS:OFF': [],
                     'MEAS:DUMP': [['int', 0, 2]],
                     'MEAS:HARM': [['int', 0, 959000000]],
                     'MEAS:OIP3': [['int', 0, 959000000], ['int', 0, 959000000]],
@@ -133,6 +134,7 @@ validCommandTable = {
                     'MEAS:THD': [],
                     'MEAS:CHPOW': [['int', 0, 959000000], ['int', 0, 959000000]],
                     'MEAS:LINE': [],
+                    'MEAS:NFIG:MTNF': [['int', 0, 959000000]],
 
                      # CONFiguration Subsystem
                      'CONF:CAPT': [],
