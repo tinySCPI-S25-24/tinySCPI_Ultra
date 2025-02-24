@@ -181,22 +181,22 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:HARMonic
     '''
     def MEASure_OFF(self, args):
-        self.send('touch 420 220')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 420 220')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 420 10')
+        self.send('touch 450 10')
         self.send('release')
 
     '''
     desc: pseudo-command function for MEASure:HARMonic
     '''
     def MEASure_HARMonic(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 35')
+        self.send('touch 450 50')
         self.send('release')
         self._enter_digits_on_screen(args)
 
@@ -204,11 +204,11 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:OIP3
     '''
     def MEASure_OIP3(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 60')
+        self.send('touch 450 87')
         self.send('release')
         print(self._enter_digits_on_screen(args))
 
@@ -216,11 +216,11 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:PhaseNOISe
     '''
     def MEASure_PhaseNOISe(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 90')
+        self.send('touch 450 122')
         self.send('release')
         print(self._enter_digits_on_screen(args))
 
@@ -228,11 +228,11 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:SNR
     '''
     def MEASure_SNR(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 120')
+        self.send('touch 450 157')
         self.send('release')
         self._enter_digits_on_screen(args)
 
@@ -240,24 +240,24 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:3DB
     '''
     def MEASure_3DB(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 150')
+        self.send('touch 450 192')
         self.send('release')
 
     '''
     desc: pseudo-command function for MEASure:AM
     '''
     def MEASure_AM(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 180')
+        self.send('touch 450 227')
         self.send('release')
-        self.send('touch 320 10')
+        self.send('touch 450 10')
         self.send('release')
         print(self._enter_digits_on_screen(args))
 
@@ -265,13 +265,13 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:FM
     '''
     def MEASure_FM(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 180')
+        self.send('touch 450 227')
         self.send('release')
-        self.send('touch 320 40')
+        self.send('touch 450 50')
         self.send('release')
         print(self._enter_digits_on_screen(args))
 
@@ -279,25 +279,25 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:THD
     '''
     def MEASure_THD(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 180')
+        self.send('touch 450 227')
         self.send('release')
-        self.send('touch 320 80')
+        self.send('touch 450 87')
         self.send('release')
     '''
     desc: pseudo-command function for MEASure:CHPOW
     '''
     def MEASure_CHPOW(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 180')
+        self.send('touch 450 227')
         self.send('release')
-        self.send('touch 320 110')
+        self.send('touch 450 122')
         self.send('release')
         print(self._enter_digits_on_screen(args))
 
@@ -305,31 +305,47 @@ class SCPI_functional:
     desc: pseudo-command function for MEASure:LINEar
     '''
     def MEASure_LINEar(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 180')
+        self.send('touch 450 227')
         self.send('release')
-        self.send('touch 320 150')
+        self.send('touch 450 157')
         self.send('release')
         
     '''
     desc: pseudo-command function for MEASure:LINEar
     '''
     def MEASure_tinySA_NF(self, args):
-        self.send('touch 300 100')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 160')
+        self.send('touch 450 215')
         self.send('release')
-        self.send('touch 320 180')
+        self.send('touch 450 227')
         self.send('release')
-        self.send('touch 320 190')
+        self.send('touch 450 192')
         self.send('release')
-        self.send('touch 320 10')
+        self.send('touch 450 10')
         self.send('release')
         print(self._enter_digits_on_screen(args))
 
+    '''
+    desc: pseudo-command function for MEASure:LINEar
+    '''
+
+    def MEASure_AMP_NF(self, args):
+        self.send('touch 450 215')
+        self.send('release')
+        self.send('touch 450 215')
+        self.send('release')
+        self.send('touch 450 227')
+        self.send('release')
+        self.send('touch 450 192')
+        self.send('release')
+        self.send('touch 450 122')
+        self.send('release')
+        print(self._enter_digits_on_screen(args))
 
     '''
     desc: pseudo-command function for MEASure:LINEar

@@ -119,7 +119,8 @@ SCPILookUpTable = {
     'MEAS:THD': (lambda obj, args: sf.SCPI_functional.MEASure_THD(obj, args)),
     'MEAS:CHPOW': (lambda obj, args: sf.SCPI_functional.MEASure_CHPOW(obj, args)),
     'MEAS:LINE': (lambda obj, args: sf.SCPI_functional.MEASure_LINEar(obj, args)),
-    'MEAS:NFIG:MTNF': (lambda obj, args: sf.SCPI_functional.MEASure_tinySA_NF(obj, args)),
+    'MEAS:TNF': (lambda obj, args: sf.SCPI_functional.MEASure_tinySA_NF(obj, args)),
+    'MEAS:ANF': (lambda obj, args: sf.SCPI_functional.MEASure_AMP_NF(obj, args)),
     'MEAS:DUMP': 'data',
 
     # CONFig subsystem
