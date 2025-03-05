@@ -2,13 +2,30 @@ import argparse
 import numpy as np
 import scpi_functional
 import scpi_parser
+import logging
+
+# Configure logging once here in tinySCPI.py
+logging.basicConfig(
+    filename="tinySA_commands.log",
+    level=logging.DEBUG,  # Change to DEBUG for more verbosity
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+def process_command(command: str):
+    """ Process SCPI command """
+    logging.info(f"Command executed: {command}")  # Log the command
 
 def user_input(input_cmd: str) -> str:
-    parser = scpi_parser.SCPI_Parser()
-    functional = scpi_functional.SCPI_functional()
-    cmd, args = parser.parse_command(input_cmd)
-    usb_str = functional.convert_scpi_to_usb(cmd, args)
-    return functional.send(usb_str)
+    try:
+        parser = scpi_parser.SCPI_Parser()
+        functional = scpi_functional.SCPI_functional()
+        cmd, args = parser.parse_command(input_cmd)
+        usb_str = functional.convert_scpi_to_usb(cmd, args)
+        process_command(input_cmd)
+        return functional.send(usb_str)
+    except Exception as e:
+        # Log the error if something goes wrong
+        logging.error(f"Error processing command '{input_cmd}': {e}")
+        return f"Error: {e}"
 
 def debug_input(input_cmd: str) -> str:
     functional = scpi_functional.SCPI_functional()
