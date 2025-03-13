@@ -41,6 +41,7 @@ SCPILookUpTable = {
 
     'FREQ:IF:AUTO': 'if 0',
     'FREQ:IF': 'if',
+    'FREQ:IF1': 'if1',
 
     # LVL subsystem
     'LVL:ATT': 'attenuate',
@@ -51,6 +52,8 @@ SCPILookUpTable = {
     'LVL:SCAL:AUTO': 'trace scale auto',
     'LVL:UNIT': 'trace',
     'LVL:XGAIN': 'ext_gain',
+    'LVL:LNA:ON': 'lna on',
+    'LVL:LNA:OFF': 'lna off',
 
     # TRIGger subsystem
     'TRIG:TYPE:AUTO': 'trigger auto',
@@ -84,6 +87,7 @@ SCPILookUpTable = {
     'OUT:LEVO:LOW': 'leveloffset low',
     'OUT:LEVO:HIGH': 'leveloffset high',
     'OUT:LEVO:SWIT': 'leveloffset switch',
+    'OUT:LEVO:LNA': 'leveloffset lna',
     'OUT:LEVCH': 'levelchange',
     'OUT:MOD': 'modulation',
     'OUT:MOD:FREQ': 'modulation freq',
@@ -91,8 +95,10 @@ SCPILookUpTable = {
     'OUT:OFF': 'output off',
     'OUT:CALI:OFF': 'caloutput off',
     'OUT:CALI': 'caloutput',
+    'OUT:EXTGN': 'ext_gain',
 
     # Marker Subsystem
+    'MARK:ON': 'marker [src]',
     'MARK:FREQ': 'marker [src] [dst]',
     'MARK:DELT': 'marker [src] delta [dst]',
     'MARK:DELT:OFF': 'marker [src] delta off',
@@ -128,5 +134,9 @@ SCPILookUpTable = {
     'CONF:CAPT': sf.SCPI_functional.take_screenshot,
     'CONF:CORR:LOW': 'correction low',
     'CONF:CORR:HIGH': 'correction high',
-
+    'CONF:CORR:LNA': 'correction lna',
+    'CONF:ULTRA:ON': 'ultra on',
+    'CONF:ULTRA:OFF': 'ultra off',
+    'CONF:ULTRA:START': 'ultra_start',
+    
 }
