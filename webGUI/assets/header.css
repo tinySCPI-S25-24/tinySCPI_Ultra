@@ -1,0 +1,14 @@
+.app-header {
+    height: 90px;
+    line-height: 65px;
+    border-bottom: thin lightgrey solid;
+}
+
+.app-header .app-header--title {
+    font-size: 50px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    background-color: rgb(99,0,49);
+    color: white;
+}
