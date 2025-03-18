@@ -1,0 +1,16 @@
+reset
+CAPTure
+frequencystart 1000000  
+frequencyend 300000000 
+frequency 10000000      
+span 2000000
+level -30 
+attenuation 10 
+trace 1       
+mode 1         
+sweep 1000    
+trigger 1
+marker 1 15000000
+hold      
+saveconfig    
+CAPTure
