@@ -6,7 +6,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../tinyscpi'))
 
 # Now import the execute_from_file function
-from tinySCPI import execute_from_file, capture, scan_raw_points
+from tinySCPI import execute_from_file, capture, scan_raw_points, user_input
 
 #HOST = '0.0.0.0'  # Listen on all interfaces
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
@@ -50,7 +50,7 @@ def receive_file(conn, filepath):
     print(f"Received file: {filepath}")
     if file_extension == '.txt':
         execute_from_file(f"data/{filepath}")
-        capture("screenshot.jpeg")
+        user_input('CONF:CAPT')
 
 def start_server():
     os.makedirs(DATA_DIR, exist_ok=True)  # Ensure the data directory exists
@@ -64,4 +64,5 @@ def start_server():
             handle_client(conn)
 
 if __name__ == "__main__":
+
     start_server()
