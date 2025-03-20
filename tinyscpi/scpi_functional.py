@@ -2,6 +2,7 @@ import struct
 import sys
 import time
 import helpers
+import os
 from datetime import datetime
 from dictionaries import digit_mappings_dict
 
@@ -107,8 +108,10 @@ class SCPI_functional:
             rgba8888 = 0xFF000000 + (
                     ((rgb565_32 & 0xF800) >> 8) + ((rgb565_32 & 0x07E0) << 5) + ((rgb565_32 & 0x001F) << 19))
             image = Image.frombuffer('RGBA', (self.screen_width, self.screen_height), rgba8888, 'raw', 'RGBA', 0, 1)
-            current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            image.save(f"tinysa_capture_{current_datetime}.png")
+            save_dir = 'data'
+            os.makedirs(save_dir, exist_ok=True)
+            file_path = os.path.join(save_dir, "screen.png")
+            image.save(file_path)
         except Exception as e:
             print(str(e))
             return f"Error sending capture command: {str(e)}"

@@ -21,7 +21,7 @@ def handle_client(conn):
         if request == "GET_CSV":
             send_file(conn, os.path.join(DATA_DIR, "trace.csv"))
         elif request == "GET_IMAGE":
-            send_file(conn, os.path.join(DATA_DIR, "screen.jpg"))
+            send_file(conn, os.path.join(DATA_DIR, "screen.png"))
         elif request == "SEND_SCRIPT":
             receive_file(conn, os.path.join(DATA_DIR, "script.txt"))
     finally:
@@ -40,15 +40,11 @@ def send_file(conn, filepath):
         print(f"File not found: {filepath}")  # Debug log
 
 def receive_file(conn, filepath):
-    file_type = conn.recv(1024).decode()
-    file_extension = None
-    if file_type == "SEND_SCRIPT":
-        file_extension = '.txt'
     with open(filepath, "wb") as f:
         while chunk := conn.recv(4096):
             f.write(chunk)
     print(f"Received file: {filepath}")
-    if file_extension == '.txt':
+    if filepath[-4:] == '.txt':
         execute_from_file(f"data/{filepath}")
         user_input('CONF:CAPT')
 
@@ -64,5 +60,6 @@ def start_server():
             handle_client(conn)
 
 if __name__ == "__main__":
-
+    execute_from_file("data/script.txt")
+    user_input('CONF:CAPT')
     start_server()
