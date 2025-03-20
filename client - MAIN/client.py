@@ -2,8 +2,8 @@ import socket
 import os
 
 # Specify the server's IP manually
-SERVER_IP = '192.168.0.105'  # Replace this with the server's IP
-PORT = 5000  # Main communication port
+SERVER_IP = '10.79.240.243'  # Replace this with the server's IP
+PORT = 5001  # Main communication port
 RECEIVED_DIR = 'data'
 
 os.makedirs(RECEIVED_DIR, exist_ok=True)
@@ -18,7 +18,7 @@ def request_file(file_type):
     print(f"Response from server: {response}")  # Debug log
 
     if response == b"EXISTS":
-        filename = f"{RECEIVED_DIR}/{'trace.csv' if file_type == 'GET_CSV' else 'screen.jpg'}"
+        filename = f"{RECEIVED_DIR}/{'trace.csv' if file_type == 'GET_CSV' else 'screen.png'}"
         print(f"Receiving file: {filename}")  # Debug log
         with open(filename, 'wb') as f:
             while True:
