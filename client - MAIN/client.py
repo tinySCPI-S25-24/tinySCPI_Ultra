@@ -18,7 +18,7 @@ def request_file(file_type):
     print(f"Response from server: {response}")  # Debug log
 
     if response == b"EXISTS":
-        filename = f"{RECEIVED_DIR}/{'trace.csv' if file_type == 'GET_CSV' else 'screen.png'}"
+        filename = f"{RECEIVED_DIR}/{'trace.csv' if file_type == 'GET_CSV' else 'screen.png'}" #changed extension
         print(f"Receiving file: {filename}")  # Debug log
         with open(filename, 'wb') as f:
             while True:
