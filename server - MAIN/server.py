@@ -1,5 +1,12 @@
 import socket
+import sys
 import os
+
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../tinyscpi'))
+
+# Now import the execute_from_file function
+from tinySCPI import execute_from_file, capture, scan_raw_points
 
 #HOST = '0.0.0.0'  # Listen on all interfaces
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
@@ -33,10 +40,17 @@ def send_file(conn, filepath):
         print(f"File not found: {filepath}")  # Debug log
 
 def receive_file(conn, filepath):
+    file_type = conn.recv(1024).decode()
+    file_extension = None
+    if file_type == "SEND_SCRIPT":
+        file_extension = '.txt'
     with open(filepath, "wb") as f:
         while chunk := conn.recv(4096):
             f.write(chunk)
     print(f"Received file: {filepath}")
+    if file_extension == '.txt':
+        execute_from_file(f"data/{filepath}")
+        capture("screenshot.jpeg")
 
 def start_server():
     os.makedirs(DATA_DIR, exist_ok=True)  # Ensure the data directory exists
