@@ -2,7 +2,6 @@ import socket
 import sys
 import os
 
-
 sys.path.append(os.path.join(os.path.dirname(__file__), '../tinyscpi'))
 
 # Now import the execute_from_file function
@@ -24,6 +23,8 @@ def handle_client(conn):
             send_file(conn, os.path.join(DATA_DIR, "screen.png"))
         elif request == "SEND_SCRIPT":
             receive_file(conn, os.path.join(DATA_DIR, "script.txt"))
+        elif request == "GET_CONSOLE":
+            send_file(conn, os.path.join(DATA_DIR, "console.log"))
     finally:
         conn.close()
 
@@ -44,9 +45,29 @@ def receive_file(conn, filepath):
         while chunk := conn.recv(4096):
             f.write(chunk)
     print(f"Received file: {filepath}")
+
     if filepath[-4:] == '.txt':
-        execute_from_file(f"data/{filepath}")
-        user_input('CONF:CAPT')
+        with open(os.path.join(DATA_DIR, "console.log"), "w") as log_file:
+            def dual_write(message):
+                sys.__stdout__.write(message)  # Print to console
+                log_file.write(message)  # Write to log file
+                log_file.flush()  # Ensure immediate write to file
+
+            class DualOutput:
+                def write(self, message):
+                    dual_write(message)
+
+                def flush(self):  # Needed to prevent errors when `flush()` is called
+                    pass
+
+            sys.stdout = sys.stderr = DualOutput()  # Redirect output
+
+            execute_from_file(filepath)
+            user_input('CONF:CAPT')
+
+            sys.stdout = sys.__stdout__  # Restore original stdout
+            sys.stderr = sys.__stderr__  # Restore original stderr
+            sys.stderr = sys.__stderr__  # Restore original stderr
 
 def start_server():
     os.makedirs(DATA_DIR, exist_ok=True)  # Ensure the data directory exists
@@ -60,6 +81,4 @@ def start_server():
             handle_client(conn)
 
 if __name__ == "__main__":
-    execute_from_file("data/script.txt")
-    user_input('CONF:CAPT')
     start_server()

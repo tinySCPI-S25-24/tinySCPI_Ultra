@@ -2,14 +2,14 @@ import socket
 import os
 
 # Specify the server's IP manually
-SERVER_IP = '10.79.240.243'  # Replace this with the server's IP
-PORT = 5001  # Main communication port
+SERVER_IP = '192.168.0.106'  # Replace this with the server's IP
+PORT = 5000  # Main communication port
 RECEIVED_DIR = 'data'
 
 os.makedirs(RECEIVED_DIR, exist_ok=True)
 
 def request_file(file_type):
-    """Requests a file (CSV or image) from the server."""
+    """Requests a file (CSV, image, or console log) from the server."""
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((SERVER_IP, PORT))
     client.send(file_type.encode())
@@ -18,7 +18,12 @@ def request_file(file_type):
     print(f"Response from server: {response}")  # Debug log
 
     if response == b"EXISTS":
-        filename = f"{RECEIVED_DIR}/{'trace.csv' if file_type == 'GET_CSV' else 'screen.png'}" #changed extension
+        filename = os.path.join(RECEIVED_DIR, {
+            "GET_CSV": "trace.csv",
+            "GET_IMAGE": "screen.png",
+            "GET_CONSOLE": "console.log"
+        }.get(file_type, "unknown_file"))
+
         print(f"Receiving file: {filename}")  # Debug log
         with open(filename, 'wb') as f:
             while True:
@@ -45,3 +50,4 @@ def send_script(script_path):
 
     client.close()
     print(f"Script sent successfully: {script_path}")
+
