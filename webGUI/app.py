@@ -31,7 +31,7 @@ footer = html.Footer(
 # Layout with full-page flexbox structure
 app.layout = html.Div([
     navbar,
-    html.Div(dash.page_container, className="app-content"),  # Main content area
+    html.Div(dash.page_container, className="app-content"),
     footer
 ], className="app-container")
 
