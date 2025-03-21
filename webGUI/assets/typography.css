@@ -1,6 +1,6 @@
 h1 {
     text-align: center;
-    padding-bottom: 25px;
+    padding: 25px;
 }
 
 a:link, a:visited{
@@ -9,18 +9,19 @@ a:link, a:visited{
     text-decoration: none;
     display: inline-block;
     color: white;
-    background-color: rgb(207, 69, 32);
     font-size: 20px
 }
 
 a:hover, a:active {
+    color: white;
     font-weight: bold;
-    background-color: rgb(181, 38, 0);
 }
 
 body {
     font-family: "Proxima Nova";
     background-color:ivory;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .row {

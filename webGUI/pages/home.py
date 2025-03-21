@@ -1,11 +1,11 @@
 import dash
 from dash import html, dcc, callback, Input, Output
 
-dash.register_page(__name__)
+dash.register_page(__name__, path="/")
 
 layout = html.Div([
-    html.H1('Home'),
-    html.Div('Welcome! Please look below or in the "About" tab for instructions.'),
+    html.H1('  '),
+    html.Div('Welcome! Please choose or upload your measurement below. If needed, please look in the "About" tab for further instructions.'),
     html.Div(
         className = "column",
         children=[

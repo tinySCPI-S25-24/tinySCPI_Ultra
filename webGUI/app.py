@@ -3,24 +3,38 @@
 # press 'ctrl + C' to disconnect when completed
 
 import dash
-from dash import Dash, html, dcc
+import dash_bootstrap_components as dbc
+from dash import html, dcc
 
-app = Dash(__name__, use_pages=True)
+# Initialize Dash app with Bootstrap for modern styling
+app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.FLATLY])
 
+# Navbar Component
+navbar = dbc.NavbarSimple(
+    brand=html.Div("Remote Spectrum Analyzer Viewer", className="app-header--title"),
+    brand_href="/",
+    children=[
+        dbc.NavItem(dbc.NavLink(page["name"], href=page["relative_path"])) 
+        for page in dash.page_registry.values()
+    ],
+    className="app-header"
+)
+
+# Footer Component
+footer = html.Footer(
+    children=[
+        html.Img(src="/assets/logo.png", style={"width": "240px", "height": "auto"})
+    ],
+    className="app-footer"
+)
+
+# Layout with full-page flexbox structure
 app.layout = html.Div([
-    html.Div(
-        className="app-header",
-        children=[
-            html.Div('Remote Spectrum Analyzer Viewer', className="app-header--title")
-        ]
-    ),
-    html.Div([
-        html.A(
-            dcc.Link(f"{page['name']}", href=page["relative_path"])
-        ) for page in dash.page_registry.values()
-    ], style={'textAlign': 'center', 'backgroundColor': "#cf4520"}),
-    dash.page_container
-])
+    navbar,
+    html.Div(dash.page_container, className="app-content"),  # Main content area
+    footer
+], className="app-container")
 
-if __name__ == '__main__':
+# Run the server
+if __name__ == "__main__":
     app.run(debug=True)
