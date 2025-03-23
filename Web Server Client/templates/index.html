@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrum Analyzer Remote</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E5752D; /* VT Orange */
+            color: #46166B; /* VT Maroon */
+            text-align: center;
+            padding: 20px;
+        }
+        h1 { color: white; }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            margin: auto;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        }
+        input, button, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        textarea { height: 200px; }
+        button {
+            background: #46166B;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover { background: #E5752D; }
+        #logs {
+            text-align: left;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #image {
+            max-width: 500px;
+            display: none;
+            margin-top: 10px;
+            border: 2px solid #46166B;
+        }
+        .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Space between buttons */
+        margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Spectrum Analyzer Remote</h1>
+    <div class="container">
+        <h2>Upload Command File</h2>
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">Upload</button>
+
+        <div class="button-container">
+            <button onclick="loadFile('autoTest1.txt')">Load Test 1</button>
+            <button onclick="loadFile('autoTest2.txt')">Load Test 2</button>
+            <button onclick="loadFile('autoTest3.txt')">Load Test 3</button>
+        </div>
+
+        <h2>Edit Commands</h2>
+        <textarea id="commandArea" placeholder="Commands will appear here..."></textarea>
+        <button onclick="executeCommands()">Run Commands</button>
+
+        <h2>Execution Logs</h2>
+        <pre id="logs"></pre>
+
+        <h2>Captured Image</h2>
+        <img id="image">
+    </div>
+
+    <script>
+        function uploadFile() {
+            let fileInput = document.getElementById("fileInput").files[0];
+            if (!fileInput) {
+                alert("Select a file first!");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("file", fileInput);
+
+            fetch("/upload", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("commandArea").value = data.content;
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function loadFile(filename) {
+            fetch(`/upload?file=${filename}`, { method: "GET" })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("commandArea").value = data.content;
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function executeCommands() {
+            let commands = document.getElementById("commandArea").value;
+            fetch("/execute", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ commands })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("logs").textContent = data.logs;
+                if (data.image_url) {
+                    let img = document.getElementById("image");
+                    img.src = data.image_url;
+                    img.style.display = "block";
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
