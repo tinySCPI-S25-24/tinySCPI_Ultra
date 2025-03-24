@@ -7,14 +7,14 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #E5752D; /* VT Orange */
-            color: #46166B; /* VT Maroon */
+            background-color: #D7D2CB;
+            color: #000000;
             text-align: center;
             padding: 20px;
         }
-        h1 { color: white; }
+        h1 { color: #000000; }
         .container {
-            background: white;
+            background: #FFFFFF;
             padding: 20px;
             border-radius: 10px;
             width: 80%;
@@ -29,15 +29,15 @@
         }
         textarea { height: 200px; }
         button {
-            background: #46166B;
-            color: white;
+            background: #E5751F;
+            color: #000000;
             border: none;
             cursor: pointer;
         }
-        button:hover { background: #E5752D; }
+        button:hover { background: #CA4F00; }
         #logs {
             text-align: left;
-            background: #f4f4f4;
+            background: #E5E1E6;
             padding: 10px;
             border-radius: 5px;
             white-space: pre-wrap;
@@ -45,16 +45,18 @@
             overflow-y: auto;
         }
         #image {
-            max-width: 500px;
+            max-width: 100%;
             display: none;
             margin-top: 10px;
-            border: 2px solid #46166B;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
         .button-container {
-        display: flex;
-        justify-content: center;
-        gap: 10px; /* Space between buttons */
-        margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -77,6 +79,9 @@
 
         <h2>Execution Logs</h2>
         <pre id="logs"></pre>
+
+        <h2>Log File History</h2>
+        <button onclick="downloadLog()">Log File with History Saved</button>
 
         <h2>Captured Image</h2>
         <img id="image">
@@ -135,6 +140,10 @@
                 }
             })
             .catch(error => console.error("Error:", error));
+        }
+
+        function downloadLog() {
+            window.location.href = "/download_log";
         }
     </script>
 </body>
