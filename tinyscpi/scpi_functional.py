@@ -102,6 +102,8 @@ class SCPI_functional:
                 _ = tinySA_device.read_until(b'capture' + self.crlf)  # wait for start of transfer
                 captured_bytes = tinySA_device.read(2 * self.screen_width * self.screen_height)
                 _ = tinySA_device.read_until(self.prompt)  # wait for cmd completion
+                tinySA_device.write(b'resume\r')  # resumes screen update
+                _ = tinySA_device.read_until(b'resume' + self.crlf + self.prompt)  # wait for completion
             rgb565 = struct.unpack(f'>{self.screen_width * self.screen_height}H', captured_bytes)
             # convert to 32bit numpy array Rrrr.rGgg.gggB.bbbb -> 0000.0000.0000.0000.Rrrr.rGgg.gggB.bbbb
             rgb565_32 = numpy.array(rgb565, dtype=numpy.uint32)

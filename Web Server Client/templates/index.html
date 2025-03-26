@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectrum Analyzer Remote</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #D7D2CB;
+            color: #000000;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #000000;
+        }
+
+        .container {
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            margin: auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        input,
+        button,
+        textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 200px;
+        }
+
+        button {
+            background: #E5751F;
+            color: #000000;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #CA4F00;
+        }
+
+        .logout {
+            position: absolute;
+            top: 0px;
+            right: 10px;
+        }
+
+        /* Styling for the header and tabs */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+
+        .navbar a {
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+        input, button, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        textarea { height: 200px; }
+        button {
+            background: #E5751F;
+            color: #000000;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover { background: #CA4F00; }
+        #logs {
+            text-align: left;
+            background: #E5E1E6;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #image {
+            max-width: 100%;
+            display: none;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% if not current_user.is_authenticated %}
+        <div class="container">
+            <h2>Login</h2>
+            <form method="POST">
+                <input type="password" name="password" placeholder="Enter password" required>
+                <button type="submit">Login</button>
+            </form>
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <h1>TinySA Ultra Remote Control </h1>
+        <button class="logout" onclick="logout()">Logout</button>
+
+        <!-- Navbar -->
+        <div class="navbar">
+            <a href="#" onclick="showTab('home')">Home</a>
+            <a href="#" onclick="showTab('scpi')">SCPI Commands</a>
+            <a href="#" onclick="showTab('advanced')">Advanced</a>
+        </div>
+
+        <!-- Home Tab Content -->
+        <div id="home" class="tab-content active">
+            <h2>Welcome to the Spectrum Analyzer Remote</h2>
+            <p>Use the tabs above to navigate through the features.</p>
+        </div>
+
+        <!-- SCPI Commands Tab Content -->
+        <div id="scpi" class="tab-content">
+            <h2>Upload Command File</h2>
+            <input type="file" id="fileInput">
+            <button onclick="uploadFile()">Upload</button>
+
+            <div class="button-container">
+                <button onclick="loadFile('autoTest1.txt')">Load Test 1</button>
+                <button onclick="loadFile('autoTest2.txt')">Load Test 2</button>
+                <button onclick="loadFile('autoTest3.txt')">Load Test 3</button>
+            </div>
+
+            <h2>Edit Commands</h2>
+            <textarea id="commandArea" placeholder="Commands will appear here..."></textarea>
+            <button onclick="executeCommands()">Run Commands</button>
+
+            <h2>Execution Logs</h2>
+            <pre id="logs"></pre>
+
+            <h2>Log File History</h2>
+            <button onclick="downloadLog()">Log File with History Saved</button>
+
+            <h2>Captured Image</h2>
+            <img id="image">
+        </div>
+
+        <!-- Advanced Tab Content -->
+        <div id="advanced" class="tab-content">
+            <h2>Advanced Settings</h2>
+            <p>Here you can configure advanced settings for your spectrum analyzer.</p>
+        </div>
+
+        <script>
+            function uploadFile() {
+                let fileInput = document.getElementById("fileInput").files[0];
+                if (!fileInput) {
+                    alert("Select a file first!");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("file", fileInput);
+
+                fetch("/upload", { method: "POST", body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById("commandArea").value = data.content;
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+
+            function loadFile(filename) {
+                fetch(`/upload?file=${filename}`, { method: "GET" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById("commandArea").value = data.content;
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+
+            function executeCommands() {
+                let commands = document.getElementById("commandArea").value;
+                fetch("/execute", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ commands })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("logs").textContent = data.logs;
+                    if (data.image_url) {
+                        let img = document.getElementById("image");
+                        img.src = data.image_url;
+                        img.style.display = "block";
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+
+            function downloadLog() {
+                window.location.href = "/download_log";
+            }
+
+            window.addEventListener("beforeunload", function () {
+                fetch("/force_logout", { method: "POST", keepalive: true });
+            });
+
+            window.addEventListener("unload", function () {
+                navigator.sendBeacon("/force_logout");
+            });
+
+            function logout() {
+                window.location.href = "/logout";
+            }
+
+            // Inactivity Timer Logic
+            let inactivityTimeout;
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimeout);
+                inactivityTimeout = setTimeout(function () {
+                    alert("Session expired due to inactivity. Logging out.");
+                    logout();
+                }, 120000);  // 120000 milliseconds = 2 minutes
+            }
+
+            window.addEventListener("mousemove", resetInactivityTimer);
+            window.addEventListener("keypress", resetInactivityTimer);
+            window.addEventListener("click", resetInactivityTimer);
+
+            resetInactivityTimer();
+
+            function showTab(tab) {
+                // Hide all tabs
+                let tabs = document.querySelectorAll('.tab-content');
+                tabs.forEach(tabContent => tabContent.classList.remove('active'));
+
+                // Show the clicked tab
+                document.getElementById(tab).classList.add('active');
+            }
+
+            // If the user is not authenticated, prevent access to SCPI commands tab
+            {% if not current_user.is_authenticated %}
+                document.querySelector('a[href="#scpi"]').style.pointerEvents = 'none';
+                document.querySelector('a[href="#scpi"]').style.color = 'gray';
+            {% endif %}
+        </script>
+
+    {% endif %}
+</body>
+</html>
