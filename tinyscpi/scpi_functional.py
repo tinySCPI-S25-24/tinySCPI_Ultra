@@ -23,8 +23,8 @@ class SCPI_functional:
         self.lf = b'\n'
         self.crlf = self.cr + self.lf
         self.prompt = b'ch> '
-        self.screen_width = 320
-        self.screen_height = 240
+        self.screen_width = 480
+        self.screen_height = 320
         self.device_name = "TinySA"
 
     '''
