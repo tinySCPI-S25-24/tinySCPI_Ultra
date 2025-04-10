@@ -119,7 +119,16 @@
             gap: 10px;
             margin-top: 10px;
         }
+
+        /* Chart styling */
+        canvas {
+            width: 100%;
+            height: 400px;
+        }
     </style>
+
+    <!-- Add Chart.js library in the <head> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     {% if not current_user.is_authenticated %}
@@ -174,6 +183,14 @@
 
             <h2>Captured Image</h2>
             <img id="image">
+
+            <!-- Line Chart for CSV Data -->
+            <h2>CSV Data Line Graph</h2>
+            <canvas id="lineChart" style="width: 100%; height: 400px;"></canvas>
+
+            <!-- New CSV Download Button -->
+            <h2>Download CSV</h2>
+            <button onclick="downloadCSV()">Download CSV</button>
         </div>
 
         <!-- Advanced Tab Content -->
@@ -218,6 +235,8 @@
                 .catch(error => console.error("Error:", error));
             }
 
+            let chart
+
             function executeCommands() {
                 let commands = document.getElementById("commandArea").value;
                 fetch("/execute", {
@@ -233,12 +252,71 @@
                         img.src = data.image_url;
                         img.style.display = "block";
                     }
+
+                    // If graph data is available, plot the line graph
+                    if (data.graph_data && data.graph_data.length > 0) {
+                        let ctx = document.getElementById('lineChart').getContext('2d');
+
+                        if (chart) {
+                            // If chart exists, update its data
+                            chart.data.labels = data.graph_data.map(d => d.x);
+                            chart.data.datasets[0].data = data.graph_data.map(d => d.y);
+                            chart.update(); // Update the chart
+                        } else {
+                            // If chart doesn't exist, create a new one
+                            chart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: data.graph_data.map(d => d.x), // x values
+                                    datasets: [{
+                                        label: 'Signal Strength (dB)',
+                                        data: data.graph_data.map(d => d.y), // y values
+                                        borderColor: '#861F41',
+                                        fill: false,
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        x: {
+                                            type: 'linear',
+                                            position: 'bottom'
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
                 })
                 .catch(error => console.error("Error:", error));
             }
 
             function downloadLog() {
                 window.location.href = "/download_log";
+            }
+
+            // New function to handle CSV download
+            function downloadCSV() {
+                fetch("/download_csv")
+                    .then(response => {
+                        if (response.ok) {
+                            return response.blob();  // Read the response as a Blob
+                        } else {
+                            throw new Error('CSV file not found');
+                        }
+                    })
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = 'data_trace.csv';
+                        link.click();  // Simulate a click to trigger download
+                        window.URL.revokeObjectURL(url);  // Clean up the object URL
+                    })
+                    .catch(error => {
+                        alert(error.message);  // Handle the error
+                        console.error("Error downloading CSV:", error);
+                    });
             }
 
             window.addEventListener("beforeunload", function () {
@@ -279,13 +357,10 @@
                 document.getElementById(tab).classList.add('active');
             }
 
-            // If the user is not authenticated, prevent access to SCPI commands tab
-            {% if not current_user.is_authenticated %}
-                document.querySelector('a[href="#scpi"]').style.pointerEvents = 'none';
-                document.querySelector('a[href="#scpi"]').style.color = 'gray';
-            {% endif %}
-        </script>
 
-    {% endif %}
-</body>
-</html>
+        // If the user is not authenticated, prevent access to SCPI commands tab
+        {% if not current_user.is_authenticated %}
+            document.querySelector('a[href="#scpi"]').style.display = 'none';
+        {% endif %}
+    </script>
+{% endif %}

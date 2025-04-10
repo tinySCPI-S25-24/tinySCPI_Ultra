@@ -3,12 +3,13 @@ import io
 import sys
 import socket
 import json
-from datetime import datetime
-from flask import Flask, request, send_file, jsonify, render_template, redirect, url_for, session
+from datetime import datetime, time
+import time
+from flask import Flask, request, send_file, jsonify, render_template, redirect, url_for, session, send_from_directory
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../tinyscpi'))
-from tinySCPI import execute_from_file, user_input
+from tinySCPI import execute_from_file, user_input, scan_raw_points
 
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ app.secret_key = "supersecretkey"
 UPLOAD_FOLDER = "data/"
 IMAGE_FILE = os.path.join(UPLOAD_FOLDER, "screen.png")
 LOG_FILE = os.path.join(UPLOAD_FOLDER, "log_file_history.txt")
+CSV_FILE = os.path.join(UPLOAD_FOLDER, "data_trace.csv")
 LOCK_FILE = os.path.join(UPLOAD_FOLDER, "lock_file.lock")
 LOGIN_LOCK = os.path.join(UPLOAD_FOLDER, "login.lock")
 
@@ -36,9 +38,6 @@ execution_count = 0
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
-
-
-
 
 class User(UserMixin):
     id = "admin"
@@ -64,8 +63,20 @@ def set_login_lock():
 
 def release_login_lock():
     """Release the login lock when the user logs out."""
+    if os.path.exists(IMAGE_FILE):
+        os.remove(IMAGE_FILE)
+
+    if os.path.exists(LOG_FILE):
+        os.remove(LOG_FILE)
+
+    if os.path.exists(CSV_FILE):
+        os.remove(CSV_FILE)
+
     if os.path.exists(LOGIN_LOCK):
         os.remove(LOGIN_LOCK)
+
+    if os.path.exists("data/commands.txt"):
+        os.remove("data/commands.txt")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -135,6 +146,8 @@ def upload_file():
 
     return jsonify({"filename": file.filename, "content": content})
 
+import csv
+
 @app.route("/execute", methods=["POST"])
 @login_required
 def execute():
@@ -173,6 +186,8 @@ def execute():
         log_file.write("-" * 40 + "\n")
 
         image_url = None
+        graph_data = None
+
         try:
             logs = execute_from_file(command_file)
             logs = log_stream.getvalue()
@@ -180,6 +195,21 @@ def execute():
             logs = f"Error executing commands: {str(e)}"
 
         sys.stdout = sys.__stdout__
+
+    scan_raw_points(savedata=True, filename="data_trace.csv", save_dir=UPLOAD_FOLDER)
+
+    # Check if the CSV file exists and read the data
+    if os.path.exists(CSV_FILE):
+        graph_data = []
+        with open(CSV_FILE, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                graph_data.append({
+                    'x': float(row['x']),
+                    'y': float(row['y'])
+                })
+
+    time.sleep(2)
 
     if "CONF:CAPT" in commands:
         try:
@@ -192,9 +222,11 @@ def execute():
         except Exception as e:
             logs += f"\nError capturing image: {str(e)}"
 
-
-
-    return jsonify({"logs": logs, "image_url": image_url})
+    return jsonify({
+        "logs": logs,
+        "image_url": image_url,
+        "graph_data": graph_data
+    })
 
 @app.route("/image/<filename>")
 @login_required
@@ -208,18 +240,19 @@ def get_image(filename):
 @app.route("/download_log")
 @login_required
 def download_log():
+    if os.path.exists(LOG_FILE):
        return send_file(LOG_FILE, as_attachment=True, download_name="log_file_history.txt")
+    else:
+        return jsonify({"error": "CSV file not found."}), 404
 
 
-if __name__ == "__main__":
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.connect(("8.8.8.8", 80))
-        HOST = s.getsockname()[0]
-
-    PORT = 5000
-
-    print(f"Flask server is running at http://{HOST}:{PORT}")
-    app.run(host=HOST, port=PORT, debug=True)
+@app.route("/download_csv")
+@login_required
+def download_csv():
+    if os.path.exists(CSV_FILE):
+        return send_file(CSV_FILE, as_attachment=True, download_name="data_trace.csv")
+    else:
+        return jsonify({"error": "CSV file not found."}), 404
 
 @app.route("/force_logout", methods=["POST"])
 def force_logout():
@@ -231,7 +264,6 @@ def force_logout():
         session.pop("logged_in", None)
         release_login_lock()
     return "", 204
-
 
 if __name__ == "__main__":
     release_login_lock()

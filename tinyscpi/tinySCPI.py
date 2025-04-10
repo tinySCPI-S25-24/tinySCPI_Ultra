@@ -1,4 +1,6 @@
 import argparse
+import os
+
 import numpy as np
 import scpi_functional
 import scpi_parser
@@ -45,12 +47,32 @@ def capture(filename: str) -> str:
     functional.take_screenshot(filename)
     return f"Success, saved as {filename} in current directory"
 
-def scan_raw_points(savedata: bool, start_freq: int, stop_freq: int, num_points: int, filename: str) -> str:
+def scan_raw_points(savedata: bool, start_freq: int = None, stop_freq: int = None, num_points: int = 101, filename: str = "data_dump.csv", save_dir: str = ".") -> str:
+    # Automatically fetch start and stop frequencies if not provided
+    if start_freq is None or stop_freq is None:
+        freq_dump_raw = user_input("FREQ:DUMP")
+        try:
+            # Parse newline-separated frequency values
+            freq_list = list(map(int, freq_dump_raw.strip().splitlines()))
+            if len(freq_list) < 2:
+                raise ValueError("FREQ:DUMP returned too few frequency values.")
+            start_freq = freq_list[0]
+            stop_freq = freq_list[-1]
+        except Exception as e:
+            return f"Error parsing frequency dump: {e}"
+
+    # Scan the raw points
     functional = scpi_functional.SCPI_functional()
     result = functional.scan_raw(start_freq, stop_freq, num_points)
+
+    # Save the data if requested
     if savedata:
-        np.savetxt(filename, result, delimiter=',', fmt='%.8f')
-        print(f"Successfully saved data in current working directory as {filename}")
+        frequencies = np.linspace(start_freq, stop_freq, num_points)
+        combined_data = np.column_stack((frequencies, result))
+        file_path = os.path.join(save_dir, filename)
+        np.savetxt(file_path, combined_data, delimiter=',', header='x,y', comments='', fmt='%.0f,%.8f')
+        print(f"Successfully saved data to: {file_path}")
+
     return result
 
 def main():
