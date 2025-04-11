@@ -26,6 +26,7 @@ def user_input(input_cmd: str) -> str:
         if cmd == 'CONF:CAPT':
             print("Screen captured")
         functional.send(usb_str)
+        return functional.send(usb_str)
     except Exception as e:
         # Log the error if something goes wrong
         logging.error(f"Error processing command '{input_cmd}': {e}")
