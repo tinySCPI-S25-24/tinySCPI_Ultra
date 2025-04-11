@@ -290,41 +290,49 @@
                 })
                 .catch(error => console.error("Error:", error));
             }
+            let ignoreUnload = false;
 
             function downloadLog() {
+                ignoreUnload = true;
                 window.location.href = "/download_log";
+                setTimeout(() => ignoreUnload = false, 1000); // Reset flag after 1 sec
             }
 
             // New function to handle CSV download
             function downloadCSV() {
+                ignoreUnload = true;
                 fetch("/download_csv")
                     .then(response => {
-                        if (response.ok) {
-                            return response.blob();  // Read the response as a Blob
-                        } else {
-                            throw new Error('CSV file not found');
-                        }
+                        if (response.ok) return response.blob();
+                        throw new Error('CSV file not found');
                     })
                     .then(blob => {
                         const url = window.URL.createObjectURL(blob);
                         const link = document.createElement('a');
                         link.href = url;
                         link.download = 'data_trace.csv';
-                        link.click();  // Simulate a click to trigger download
-                        window.URL.revokeObjectURL(url);  // Clean up the object URL
+                        link.click();
+                        window.URL.revokeObjectURL(url);
                     })
                     .catch(error => {
-                        alert(error.message);  // Handle the error
+                        alert(error.message);
                         console.error("Error downloading CSV:", error);
+                    })
+                    .finally(() => {
+                        setTimeout(() => ignoreUnload = false, 1000);
                     });
             }
 
             window.addEventListener("beforeunload", function () {
-                fetch("/force_logout", { method: "POST", keepalive: true });
+                if (!ignoreUnload) {
+                    fetch("/force_logout", { method: "POST", keepalive: true });
+                }
             });
 
             window.addEventListener("unload", function () {
-                navigator.sendBeacon("/force_logout");
+                if (!ignoreUnload) {
+                    navigator.sendBeacon("/force_logout");
+                }
             });
 
             function logout() {
