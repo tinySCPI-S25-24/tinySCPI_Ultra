@@ -23,7 +23,9 @@ def user_input(input_cmd: str) -> str:
         cmd, args = parser.parse_command(input_cmd)
         usb_str = functional.convert_scpi_to_usb(cmd, args)
         process_command(input_cmd)
-        return functional.send(usb_str)
+        if cmd == 'CONF:CAPT':
+            print("Screen captured")
+        functional.send(usb_str)
     except Exception as e:
         # Log the error if something goes wrong
         logging.error(f"Error processing command '{input_cmd}': {e}")
@@ -39,8 +41,12 @@ def execute_from_file(filepath: str) -> None:
         for line in file:
             list_of_cmds.append(line)
         for cmd in list_of_cmds:
-            print(user_input(cmd.strip()))
+            result = user_input(cmd.strip())
+            if result:
+                print(result)
+
     file.close()
+
 
 def capture(filename: str) -> str:
     functional = scpi_functional.SCPI_functional()
