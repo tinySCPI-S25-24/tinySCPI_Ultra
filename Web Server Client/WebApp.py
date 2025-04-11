@@ -66,8 +66,8 @@ def release_login_lock():
     if os.path.exists(IMAGE_FILE):
         os.remove(IMAGE_FILE)
 
-    # if os.path.exists(LOG_FILE):
-    #     os.remove(LOG_FILE)
+    if os.path.exists(LOG_FILE):
+        os.remove(LOG_FILE)
 
     if os.path.exists(CSV_FILE):
         os.remove(CSV_FILE)
