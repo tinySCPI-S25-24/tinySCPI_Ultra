@@ -57,12 +57,6 @@ def is_logged_in():
 
 def set_login_lock():
     """Mark the system as having an active user."""
-    with open(LOGIN_LOCK, "w") as f:
-        f.write("locked")
-
-
-def release_login_lock():
-    """Release the login lock when the user logs out."""
     if os.path.exists(IMAGE_FILE):
         os.remove(IMAGE_FILE)
 
@@ -72,11 +66,20 @@ def release_login_lock():
     if os.path.exists(CSV_FILE):
         os.remove(CSV_FILE)
 
+    if os.path.exists("data/commands.txt"):
+        os.remove("data/commands.txt")
+
+    with open(LOGIN_LOCK, "w") as f:
+        f.write("locked")
+
+
+def release_login_lock():
+    """Release the login lock when the user logs out."""
+
     if os.path.exists(LOGIN_LOCK):
         os.remove(LOGIN_LOCK)
 
-    if os.path.exists("data/commands.txt"):
-        os.remove("data/commands.txt")
+
 
 
 @app.route("/", methods=["GET", "POST"])
