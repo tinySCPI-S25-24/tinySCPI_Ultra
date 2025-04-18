@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spectrum Analyzer Remote</title>
+    <title>Remote Spectrum Analyzer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -125,6 +125,24 @@
             width: 100%;
             height: 400px;
         }
+
+        .footer-logo {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            opacity: 0.7;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-logo img:hover {
+            opacity: 1;
+        }
     </style>
 
     <!-- Add Chart.js library in the <head> -->
@@ -134,14 +152,20 @@
     {% if not current_user.is_authenticated %}
         <div class="container">
             <h2>Login</h2>
+
+
             <form method="POST">
                 <input type="password" name="password" placeholder="Enter password" required>
                 <button type="submit">Login</button>
             </form>
+
             {% if error %}
                 <p style="color: red;">{{ error }}</p>
             {% endif %}
         </div>
+        <footer style="background-color: white; padding: 20px; text-align: center; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -2px 6px rgba(0,0,0,0.1);">
+            <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" style="height: 40px;">
+        </footer>
     {% else %}
         <h1>TinySA Ultra Remote Control </h1>
         <button class="logout" onclick="logout()">Logout</button>
@@ -157,7 +181,54 @@
         <div id="home" class="tab-content active">
             <h2>Welcome to the Spectrum Analyzer Remote</h2>
             <p>Use the tabs above to navigate through the features.</p>
+
+            <div class="container" style="margin-top: 20px;">
+                <h3>About This Project</h3>
+                <p id="project-description">
+                    This remote interface is designed to control and interact with the TinySA Ultra Spectrum Analyzer. It allows users to upload and execute SCPI commands, visualize spectrum data, download CSVs, and manage captured images.
+                </p>
+                <div style="flex: 1; min-width: 250px;">
+                    <img src="{{ url_for('static', filename='assets/team_photo.png') }}" alt="Team Picture" style="width: 25%; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1);">
+                    <p>LEFT to RIGHT: Kidus Melaku, Ivin Biju, Puneeth Vangumalla, Craig Schichtel, Alena Anderson</p>
+                </div>
+            </div>
+
+            <div class="container" style="margin-top: 20px;">
+                <h3>How To Use</h3>
+                <p id="project-description">
+                    Please Read This Section Carefully
+                </p>
+
+                <div style="flex: 1; min-width: 250px; margin-bottom: 20px;">
+                    <img src="{{ url_for('static', filename='assets/tinysa_logo.png') }}" alt="TinySA Logo" style="width: 10%; border-radius: 10px; box-shadow: 0px 2px 8px rgba(0,0,0,0.1);">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4>Ultra Mode Activation</h4>
+                    <p>
+                        If you'd like to activate <strong>Ultra Mode</strong>, please visit the official TinySA wiki and follow the instructions on the page.
+                    </p>
+                    <p>
+                        <a href="https://tinysa.org/wiki/pmwiki.php?n=TinySA4.Ultra" target="_blank" style="color: #007bff; text-decoration: underline;">Activate Ultra Mode here</a>
+                    </p>
+                    <p>You'll find a code on the page that can be used with the Ultra Mode command.</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4>SCPI Command Reference</h4>
+                    <p>
+                        Below is a list of supported SCPI commands you can send to the TinySA Ultra through this web interface.
+                    </p>
+
+                    {% include 'scpi_table.html' %}
+                </div>
+            </div>
+
+
+
+
         </div>
+
 
         <!-- SCPI Commands Tab Content -->
         <div id="scpi" class="tab-content">
@@ -194,10 +265,44 @@
         </div>
 
         <!-- Advanced Tab Content -->
-        <div id="advanced" class="tab-content">
+        <div id="advanced" class="tab-content" style="padding: 20px; font-family: Arial, sans-serif">
             <h2>Advanced Settings</h2>
-            <p>Here you can configure advanced settings for your spectrum analyzer.</p>
+            <p style="text-align: center; font-size: 16px;">Here you can configure advanced settings for your spectrum analyzer.</p>
+
+            <hr style="border: 1px solid #ddd; margin: 20px 0;">
+
+            <div style="background-color: #f9f9f9; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <h3 style="margin-top: 0;">Raspberry Pi Connect (Beta)</h3>
+                <p style="font-size: 16px; line-height: 1.6;">
+                    <strong>Raspberry Pi Connect</strong> is a new beta feature that allows you to remotely access your Raspberry Pi devices through a browser, from anywhere in the world. It’s ideal for administrative functions and running web apps without the limitations of local network access or geographic restrictions.
+                </p>
+                <p style="font-size: 16px; line-height: 1.6;">
+                    This means you can manage and interact with your spectrum analyzer’s interface even if you're away from home, as long as it's connected to the internet.
+                </p>
+
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="https://www.raspberrypi.com/news/raspberry-pi-connect/" target="_blank"
+                       style="font-size: 18px; color: white; background-color: #ff5722; text-decoration: none;
+                              font-weight: bold; border: none; padding: 12px 24px; border-radius: 5px;
+                              display: inline-block; transition: background-color 0.3s ease;">
+                        Learn More about Raspberry Pi Connect
+                    </a>
+
+                    <a href="https://www.raspberrypi.com/software/connect/" target="_blank"
+                       style="font-size: 18px; color: white; background-color: #ff5722; text-decoration: none;
+                              font-weight: bold; border: none; padding: 12px 24px; border-radius: 5px;
+                              display: inline-block; transition: background-color 0.3s ease;">
+                        Access Raspberry Pi Connect
+                    </a>
+
+                </p>
+            </div>
         </div>
+
+
+        <footer style="background-color: white; padding: 20px; text-align: center; position: fixed; bottom: 0; width: 100%; box-shadow: 0 -2px 6px rgba(0,0,0,0.1);">
+            <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" style="height: 40px;">
+        </footer>
 
         <script>
             function uploadFile() {
@@ -370,5 +475,6 @@
         {% if not current_user.is_authenticated %}
             document.querySelector('a[href="#scpi"]').style.display = 'none';
         {% endif %}
+
     </script>
 {% endif %}
