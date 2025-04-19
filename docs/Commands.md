@@ -421,7 +421,7 @@ CONFig:
 	    Takes a screenshot of the tinySA, saves it in the current working directory
 
 	ULTRA:ON [password]
-	    arguments: password wich is : [1234]
+	    arguments: password which is [1234]
 	    Enables ultra mode input and output upon providing password.
 
 	ULTRA:OFF
