@@ -25,9 +25,9 @@ validCommandTable = {
                      'SYST:CLRCONF': [],
 
                      # FREQuency Subsystem
-                     'FREQ:START': [['int', 0, 959000000]],
-                     'FREQ:STOP': [['int', 0, 959000000]],
-                     'FREQ:CENT': [['int', 0, 959000000]],
+                     'FREQ:START': [['int', 0, 6000000000]],
+                     'FREQ:STOP': [['int', 0, 6000000000]],
+                     'FREQ:CENT': [['int', 0, 6000000000]],
                      'FREQ:SPAN': [['int', 0, 290]],
                      'FREQ:SPAN:ZERO': [],
                      'FREQ:RBW': [['str', '3', '10', '30', '100', '300', '600']],
@@ -102,7 +102,7 @@ validCommandTable = {
                      'MARK:FREQ': [['int', 1, 8], ['int', 0, 959000000]],
 
                      'MARK:DELT': [['int', 1, 8], ['int', 1, 8]],
-                     'MARK:DELT:OFF': [['int', 1, 4]],
+                     'MARK:DELT:OFF': [['int', 1, 8]],
 
                      'MARK:TRAK:SET': [['int', 1, 8]],
                      'MARK:TRAK:OFF': [['int', 1, 8]],
@@ -148,9 +148,9 @@ validCommandTable = {
                      'CONF:CORR:LOW': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
                      'CONF:CORR:HIGH': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
                      'CONF:CORR:LNA': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
-                     'CONF:ULTRA:ON': [],
+                     'CONF:ULTRA:ON': ['int', 1234],
                      'CONF:ULTRA:OFF': [],
-                     'CONF:ULTRA:START': ['int', 0, 4290000000],
+                     'CONF:ULTRA:START': [['int', 1234], ['int', 0, 4290000000]],
 
                     }
 
