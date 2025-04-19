@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCPI Command Table</title>
+
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <!-- Include DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h4 {
+            color: #333;
+        }
+        button {
+            background-color: #E5751F;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #D16300;
+        }
+        #scpiTable_wrapper {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="margin-bottom: 20px;">
+        <!-- SCPI Command Table (Always visible) -->
+        <table id="scpiTable" class="display" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                    <th>Values</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>*IDN?</code></td><td>Identification</td><td>None</td></tr>
+                <tr><td><code>*RST</code></td><td>Reset</td><td>None</td></tr>
+                <tr><td><code>*CLR</code></td><td>Clear</td><td>None</td></tr>
+                <tr><td><code>*TST?</code></td><td>Self Test</td><td>None</td></tr>
+                <tr><td><code>*HLP</code></td><td>Help</td><td>None</td></tr>
+
+                <tr><td><code>SYST:DAC</code></td><td>DAC</td><td>int (0 - 4059)</td></tr>
+                <tr><td><code>SYST:ID</code></td><td>System ID</td><td>None</td></tr>
+                <tr><td><code>SYST:VERS</code></td><td>System Version</td><td>None</td></tr>
+                <tr><td><code>SYST:MODE:LOW:IN</code></td><td>System Mode Low Input</td><td>None</td></tr>
+                <tr><td><code>SYST:MODE:HIGH:IN</code></td><td>System Mode High Input</td><td>None</td></tr>
+                <tr><td><code>SYST:MODE:LOW:OUT</code></td><td>System Mode Low Output</td><td>None</td></tr>
+                <tr><td><code>SYST:MODE:HIGH:OUT</code></td><td>System Mode High Output</td><td>None</td></tr>
+                <tr><td><code>SYST:VBAT</code></td><td>Battery Voltage</td><td>None</td></tr>
+                <tr><td><code>SYST:SAVE</code></td><td>Save System Configuration</td><td>int (0 - 4)</td></tr>
+                <tr><td><code>SYST:SCONF</code></td><td>Save Configuration</td><td>None</td></tr>
+                <tr><td><code>SYST:TCAL</code></td><td>Touch Calibration</td><td>None</td></tr>
+                <tr><td><code>SYST:TTEST</code></td><td>Touch Test</td><td>None</td></tr>
+                <tr><td><code>SYST:THRE</code></td><td>Thread Configuration</td><td>None</td></tr>
+                <tr><td><code>SYST:STEST</code></td><td>Functional Self Test</td><td>None</td></tr>
+                <tr><td><code>SYST:OFFS</code></td><td>Offset</td><td>int (0 - 4095)</td></tr>
+                <tr><td><code>SYST:CLRCONF</code></td><td>Clear Configuration</td><td>None</td></tr>
+
+                <!-- Frequency Subsystem -->
+                <tr><td><code>FREQ:START</code></td><td>Frequency Sweep Start</td><td>int (0 - 959000000)</td></tr>
+                <tr><td><code>FREQ:STOP</code></td><td>Frequency Sweep Stop</td><td>int (0 - 959000000)</td></tr>
+                <tr><td><code>FREQ:CENT</code></td><td>Center Sweep Frequency</td><td>int (0 - 959000000)</td></tr>
+                <tr><td><code>FREQ:SPAN</code></td><td>Frequency Sweep Span</td><td>int (0 - 290)</td></tr>
+                <tr><td><code>FREQ:SPAN:ZERO</code></td><td>Frequency Sweep Span</td><td>None</td></tr>
+                <tr><td><code>FREQ:RBW</code></td><td>Resolution Bandwidth</td><td>str ('3', '10', '30', '100', '300', '600')</td></tr>
+                <tr><td><code>FREQ:RBW:AUTO</code></td><td>Auto Resolution Bandwidth</td><td>None</td></tr>
+                <tr><td><code>FREQ:DUMP</code></td><td>Dump Frequency</td><td>None</td></tr>
+
+                <tr><td><code>FREQ:SCAN:FREQ</code></td><td>Scan Frequency</td><td>int (0 - 959000000) [2 Values]</td></tr>
+                <tr><td><code>FREQ:SCAN:MEAS</code></td><td>Scan Measurement</td><td>int (0 - 959000000) [2 Values]</td></tr>
+                <tr><td><code>FREQ:SCAN:STOR</code></td><td>Scan Storage</td><td>int (0 - 959000000) [2 Values]</td></tr>
+
+                <tr><td><code>FREQ:IF:AUTO</code></td><td>Auto Intermediate Frequency</td><td>None</td></tr>
+                <tr><td><code>FREQ:IF</code></td><td>Intermediate Frequency</td><td>int (433000000 - 435000000)</td></tr>
+                <tr><td><code>FREQ:IF1</code></td><td>IF1 Frequency</td><td>int (975000000 - 979000000)</td></tr>
+
+                <!-- Level Subsystem -->
+                <tr><td><code>LVL:ATT</code></td><td>Attenuation</td><td>int (0 - 31)</td></tr>
+                <tr><td><code>LVL:ATT:AUTO</code></td><td>Auto Attenuation</td><td>None</td></tr>
+                <tr><td><code>LVL:REF</code></td><td>Reference Level</td><td>float (-inf - inf)</td></tr>
+                <tr><td><code>LVL:REF:AUTO</code></td><td>Auto Reference Level</td><td>None</td></tr>
+                <tr><td><code>LVL:SCAL</code></td><td>Scaling</td><td>str ('1', '2', '5', '10', '20')</td></tr>
+                <tr><td><code>LVL:SCAL:AUTO</code></td><td>Auto Scaling</td><td>None</td></tr>
+                <tr><td><code>LVL:UNIT</code></td><td>Level Units</td><td>str ('dBm', 'dBmV', 'dBuV', 'V', 'W')</td></tr>
+                <tr><td><code>LVL:XGAIN</code></td><td>Gain</td><td>int (-100 - 100)</td></tr>
+                <tr><td><code>LVL:LNA:ON</code></td><td>LNA On</td><td>None</td></tr>
+                <tr><td><code>LVL:LNA:OFF</code></td><td>LNA Off</td><td>None</td></tr>
+
+                <!-- Trigger Subsystem -->
+                <tr><td><code>TRIG:TYPE:AUTO</code></td><td>Trigger Auto</td><td>None</td></tr>
+                <tr><td><code>TRIG:TYPE:NORM</code></td><td>Trigger Normal</td><td>None</td></tr>
+                <tr><td><code>TRIG:TYPE:SNGL</code></td><td>Trigger Single</td><td>None</td></tr>
+                <tr><td><code>TRIG:LVL</code></td><td>Trigger Level</td><td>float (-200.0 - 13.0)</td></tr>
+
+                <!-- Trace Subsystem -->
+                <tr><td><code>TRAC:FREZ:ON</code></td><td>Trace Freeze On</td><td>int (1 - 4)</td></tr>
+                <tr><td><code>TRAC:FREZ:OFF</code></td><td>Trace Freeze Off</td><td>int (1 - 4)</td></tr>
+                <tr><td><code>TRAC:VIEW:ON</code></td><td>Trace View On</td><td>int (1 - 4)</td></tr>
+                <tr><td><code>TRAC:VIEW:OFF</code></td><td>Trace View Off</td><td>int (1 - 4)</td></tr>
+                <tr><td><code>TRAC:VAL</code></td><td>Trace Value</td><td>int (1 - 4)</td></tr>
+                <tr><td><code>TRAC:COPY</code></td><td>Trace Copy</td><td>int (1 - 4) [2 Values]</td></tr>
+                <tr><td><code>TRAC:SUB</code></td><td>Trace Sub</td><td>int (1 - 4) [2 Values]</td></tr>
+                <tr><td><code>TRAC:SUB:OFF</code></td><td>Trace Sub Off</td><td>int (1 - 4)</td></tr>
+
+                <!-- Display Subsystem -->
+                <tr><td><code>DISP:PAUSE</code></td><td>Display Pause</td><td>None</td></tr>
+                <tr><td><code>DISP:RESUME</code></td><td>Display Resume</td><td>None</td></tr>
+                <tr><td><code>DISP:REFRESH</code></td><td>Display Refresh</td><td>None</td></tr>
+                <tr><td><code>DISP:COLOR</code></td><td>Display Color</td><td>int (0 - 30), hex (0x0 - 0xffffff)</td></tr>
+                <tr><td><code>DISP:SWEEPTIME</code></td><td>Sweep Time</td><td>int (0 - 10)</td></tr>
+                <tr><td><code>DISP:SPUR</code></td><td>Spur Display</td><td>bool</td></tr>
+                <tr><td><code>DISP:CAPT</code></td><td>Display Capture</td><td>None</td></tr>
+
+                <!-- Output Subsystem -->
+                <tr><td><code>OUT:LEV</code></td><td>Output Level</td><td>int (-76 - 13)</td></tr>
+                <tr><td><code>OUT:LEVO:LOW</code></td><td>Output Level Low</td><td>int (-70 - 70)</td></tr>
+                <tr><td><code>OUT:LEVO:HIGH</code></td><td>Output Level High</td><td>int (-70 - 70)</td></tr>
+                <tr><td><code>OUT:LEVO:SWIT</code></td><td>Output Level Switch</td><td>int (-70 - 70)</td></tr>
+                <tr><td><code>OUT:LEVO:LNA</code></td><td>Output Level LNA</td><td>int (-70 - 70)</td></tr>
+                <tr><td><code>OUT:LEVCH</code></td><td>Output Level Change</td><td>int (-70 - 70)</td></tr>
+                <tr><td><code>OUT:MOD</code></td><td>Output Modulation</td><td>str ('off', 'am', 'nfm', 'wfm', 'extern')</td></tr>
+                <tr><td><code>OUT:MOD:FREQ</code></td><td>Output Modulation Frequency</td><td>int (100 - 6000)</td></tr>
+                <tr><td><code>OUT:ON</code></td><td>Output On</td><td>None</td></tr>
+                <tr><td><code>OUT:OFF</code></td><td>Output Off</td><td>None</td></tr>
+                <tr><td><code>OUT:CALI:OFF</code></td><td>Output Calibration Off</td><td>None</td></tr>
+                <tr><td><code>OUT:CALI</code></td><td>Output Calibration</td><td>str ('30', '15', '10', '4', '3', '2', '1')</td></tr>
+                <tr><td><code>OUT:STORE</code></td><td>Output Store</td><td>None</td></tr>
+                <tr><td><code>OUT:STEP</code></td><td>Output Step</td><td>int (1 - 10)</td></tr>
+                <tr><td><code>OUT:STEP:LOOP</code></td><td>Output Step Loop</td><td>int (1 - 100)</td></tr>
+                <tr><td><code>OUT:STEP:RES</code></td><td>Output Step Resolution</td><td>int (0 - 100)</td></tr>
+
+                <tr><td><code>MARK:ON</code></td><td>Marker On</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:NOIS:SET</code></td><td>Marker Noise Set</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:NOIS:OFF</code></td><td>Marker Noise Off</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:TRAKING</code></td><td>Marker Tracking</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:FREQ</code></td><td>Marker Frequency</td><td>int (1 - 8), int (0 - 959000000)</td></tr>
+                <tr><td><code>MARK:DELT</code></td><td>Marker Delta</td><td>int (1 - 8), int (1 - 8)</td></tr>
+                <tr><td><code>MARK:DELT:OFF</code></td><td>Marker Delta Off</td><td>int (1 - 4)</td></tr>
+                <tr><td><code>MARK:TRAK:SET</code></td><td>Marker Track Set</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:TRAK:OFF</code></td><td>Marker Track Off</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:TRAC</code></td><td>Marker Track</td><td>int (1 - 8), int (1 - 4)</td></tr>
+                <tr><td><code>MARK:AVER:SET</code></td><td>Marker Average Set</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:AVER:OFF</code></td><td>Marker Average Off</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:SRCH:PEAK</code></td><td>Marker Search Peak</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:SRCH:MINR</code></td><td>Marker Search Min Right</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:SRCH:MINL</code></td><td>Marker Search Min Left</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:SRCH:MAXR</code></td><td>Marker Search Max Right</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:SRCH:MAXL</code></td><td>Marker Search Max Left</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:SRCH:FREQ</code></td><td>Marker Search Frequency</td><td>int (1 - 8), int (0 - 959000000)</td></tr>
+                <tr><td><code>MARK:DEL</code></td><td>Marker Delete</td><td>int (1 - 8)</td></tr>
+                <tr><td><code>MARK:RST</code></td><td>Marker Reset</td><td>None</td></tr>
+                <tr><td><code>MARK:DIFF</code></td><td>Marker Difference</td><td>int (1 - 8), int (1 - 8)</td></tr>
+                <tr><td><code>MARK:DIFF:OFF</code></td><td>Marker Difference Off</td><td>int (1 - 8)</td></tr>
+
+                <tr><td><code>MEAS:OFF</code></td><td>Measurement Off</td><td>None</td></tr>
+                <tr><td><code>MEAS:DUMP</code></td><td>Measurement Dump</td><td>int (0 - 2)</td></tr>
+                <tr><td><code>MEAS:HARM</code></td><td>Measurement Harmonics</td><td>int (0 - 959000000), int (0 - 959000000)</td></tr>
+                <tr><td><code>MEAS:OIP3</code></td><td>Measurement OIP3</td><td>int (0 - 959000000), int (0 - 959000000)</td></tr>
+                <tr><td><code>MEAS:PNOIS</code></td><td>Measurement PNOIS</td><td>int (0 - 959000000), int (0 - 959000000)</td></tr>
+                <tr><td><code>MEAS:SNR</code></td><td>Measurement SNR</td><td>int (0 - 959000000), int (0 - 959000000)</td></tr>
+                <tr><td><code>MEAS:3DB</code></td><td>Measurement 3DB</td><td>None</td></tr>
+                <tr><td><code>MEAS:AM</code></td><td>Measurement AM</td><td>int (0 - 959000000), int (3000 - 10000)</td></tr>
+                <tr><td><code>MEAS:FM</code></td><td>Measurement FM</td><td>int (0 - 959000000), int (1000 - 2500)</td></tr>
+                <tr><td><code>MEAS:THD</code></td><td>Measurement THD</td><td>None</td></tr>
+                <tr><td><code>MEAS:CHPOW</code></td><td>Measurement Channel Power</td><td>int (0 - 959000000), int (0 - 959000000)</td></tr>
+                <tr><td><code>MEAS:LINE</code></td><td>Measurement Linearity</td><td>None</td></tr>
+                <tr><td><code>MEAS:TNF</code></td><td>Measurement TNF</td><td>int (0 - 959000000)</td></tr>
+                <tr><td><code>MEAS:ANF</code></td><td>Measurement ANF</td><td>int (0 - 959000000)</td></tr>
+
+                <tr><td><code>CONF:CAPT</code></td><td>Configuration Capture</td><td>None</td></tr>
+                <tr><td><code>CONF:CALC</code></td><td>Configuration Calculation</td><td>str ('off', 'minh', 'maxh', 'maxd', 'aver4', 'aver16', 'quasip')</td></tr>
+                <tr><td><code>CONF:CORR:LOW</code></td><td>Configuration Correction Low</td><td>int (0 - 19), int (0 - 959000000), float (-200.0 - 13.0)</td></tr>
+                <tr><td><code>CONF:CORR:HIGH</code></td><td>Configuration Correction High</td><td>int (0 - 19), int (0 - 959000000), float (-200.0 - 13.0)</td></tr>
+                <tr><td><code>CONF:CORR:LNA</code></td><td>Configuration Correction LNA</td><td>int (0 - 19), int (0 - 959000000), float (-200.0 - 13.0)</td></tr>
+                <tr><td><code>CONF:ULTRA:ON</code></td><td>Configuration Ultra On</td><td>Ultra Mode Code</td></tr>
+                <tr><td><code>CONF:ULTRA:OFF</code></td><td>Configuration Ultra Off</td><td>None</td></tr>
+                <tr><td><code>CONF:ULTRA:START</code></td><td>Configuration Ultra Start</td><td>int (0 - 4290000000)</td></tr>
+
+        </tbody>
+    </table>
+</div>
+
+<!-- Initialize DataTable -->
+<script>
+    $(document).ready(function() {
+        $('#scpiTable').DataTable({
+            paging: true,
+            searching: true,
+            order: [[0, 'asc']],  // Order by command name
+            "pageLength": 25
+        });
+    });
+</script>
+</body> </html>
