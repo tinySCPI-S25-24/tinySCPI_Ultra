@@ -121,13 +121,17 @@ SYSTem:
 	SelfTEST
 		arguments: none
 		Performs a complete selftest of the system
+
+	CLRCONF(Clear Configuration)
+		arguments: none
+		reset the configuration to factory default
 ```
 
 ## Level Subtree
 ```
 LeVeL:
-	ATTenuate [0dB - 30dB]
-		arguments: [value between 0 and 30dB]
+	ATTenuate [0dB - 31dB]
+		arguments: [value between 0 and 31dB]
 		In dB. Controls internal attenuation.
 
 	ATTenuate:AUTO
@@ -162,6 +166,13 @@ LeVeL:
 		arguments: [value between -100 and 100]
 		Sets a digital external gain offset to display. Does not control internal attenuation and is used for
 		display / calculation purposes only.
+
+	LNA:ON
+		arguments: none
+		Enables the internal LNA. Internal attenuator is disabled in this mode.
+	LNA:OFF
+		arguments: none
+		Disables the internal LNA.
 ```
 
 ## Trigger Subtree
@@ -191,33 +202,37 @@ TRIGger:
 ```
 TRACe:
 	FREeZe:
-		ON [1-3]
-			arguments: [value between 1 and 3]
-			Freezes the trace of [1-3]. Note that this does not stop the sweep.
+		ON [1-4]
+			arguments: [value between 1 and 4]
+			Freezes the trace of [1-4]. Note that this does not stop the sweep.
 
-		OFF [1-3]
+		OFF [1-4]
 			arguments: [value between 1 and 3]
-			Unfreezes the trace of [1-3]. Note that this does not resume the sweep. 
+			Unfreezes the trace of [1-4]. Note that this does not resume the sweep. 
 
-	VIEW:ON [1-3]
-		arguments: [value between 1 and 3]
+	VIEW:ON [1-4]
+		arguments: [value between 1 and 4]
 		Turns a trace on
 
-	VIEW:OFF [1-3]
-		arguments: [value between 1 and 3]
+	VIEW:OFF [1-4]
+		arguments: [value between 1 and 4]
 		Turns a trace off
 	
-	COPY [src:1-3] [dst:1-3]
-		arguments: [value between 1 and 3] [value between 1 and 3]
+	COPY [src:1-4] [dst:1-4]
+		arguments: [value between 1 and 4] [value between 1 and 4]
 		Copies the trace data of [src] to [dst]
 
-	SUBtract:[src:1-3] [dst:1-3]
-		arguments: [value between 1 and 3] [value between 1 and 3]
+	SUBtract:[src:1-4] [dst:1-4]
+		arguments: [value between 1 and 4] [value between 1 and 4]
 		Subtracts [src] by the [dst] amount. If [src] == [dst] then nothing happens.
 
 	SUBtract:OFF
-		arguments: [value between 1 and 3] [value between 1 and 3]
+		arguments: [value between 1 and 4] [value between 1 and 4]
 		Turns the subtraction off, reverts to previous readings.
+
+	VALue [1-4]
+		arguments: [value between 1 and 4]
+		Obtains value of trace.
 ```
 
 ## Display Subtree
@@ -259,68 +274,68 @@ DISPlay
 ## Marker Subtree
 ```
 MARKer:
-	FREQuency [src:1-4] [dst:frequency_range]
-		arguments: [src:1-4] [dst:frequency_range]
+	FREQuency [src:1-8] [dst:frequency_range]
+		arguments: [src:1-8] [dst:frequency_range]
 		Places marker `src` on `freq` Hz in the trace. Note that dst has to be in raw numbers in Hz or in 
 		units of k, M, G and in valid frequency range.. 
 
-	DELTa [src:1-4] [dst: 1-4] 
-		arguments: [src:1-4] [dst:1-4]
+	DELTa [src:1-8] [dst: 1-8] 
+		arguments: [src:1-8] [dst:1-8]
 		Subtracts frequency and power level in units from `dst` to `src` and displays on the tinySA as a
   		‘delta' mode. Does not return values. For that, see DIFFerence.
 
-	DELTa:OFF [src:1-4]: 
-		arguments: [src:1-4]
+	DELTa:OFF [src:1-8]: 
+		arguments: [src:1-8]
 		Turns off the delta mode on the selected marker `src`, if on. 
 
-	NOISe:SET [src:1-4]
-		arguments: [src:1-4]
+	NOISe:SET [src:1-8]
+		arguments: [src:1-8]
 		Sets `src` marker as the noise marker
 
-	NOISe:OFF [src:1-4]
-		arguments: [src:1-4]
+	NOISe:OFF [src:1-8]
+		arguments: [src:1-8]
 		Unsets the `src` marker as the noise marker
 
-	TRAcK:SET [src:1-4] 
-		arguments: [src:1-4]
+	TRAcK:SET [src:1-8] 
+		arguments: [src:1-8]
 		Sets the marker of `src` to tracking mode- i.e. tracking the largest signal in the sweep
 
-	TRAcK:OFF [src:1-4] 
-		arguments: [src:1-4]
+	TRAcK:OFF [src:1-8] 
+		arguments: [src:1-8]
 		Unsets the marker from track mode and fixes it to the frequency it was at.
 
-	TRACe [src:1-4] [dst:1-3] 
-		arguments: [src:1-4] [dst: 1-3]
+	TRACe [src:1-8] [dst:1-4] 
+		arguments: [src:1-8] [dst: 1-4]
 		Assigns marker `src` to the trace `dst`
 
-	AVERage:SET [src:1-4] 
-		arguments: [src:1-4]
+	AVERage:SET [src:1-8] 
+		arguments: [src:1-8]
 		Sets the marker to display the current trace’s average 
 
-	AVERage:OFF [src:1-4] 
-		arguments: [src:1-4]
+	AVERage:OFF [src:1-8] 
+		arguments: [src:1-8]
 		Unsets the marker to display the current trace’s average
 
 	SeaRCH:
-		PEAK [src: 1-4]
-			arguments: [src:1-4]
+		PEAK [src: 1-8]
+			arguments: [src:1-8]
 			Sets `src` marker to global maximum. Note this returns a serial output.
 
-		FREQuency [src: 1-4] [freq: in frequency range]
-			arguments: [src: 1-4]
+		FREQuency [src: 1-8] [freq: in frequency range]
+			arguments: [src: 1-8]
 			Sets marker `src` to a specific frequency. Keep in mind that `freq` has to be a valid frequency, more than 10kHz otherwise anything entered 0-290 will be treated as an index instead (needs input 
                         checking).
 
-	DELete [src: 1-4]
-		arguments: [src: 1-4]
+	DELete [src: 1-8]
+		arguments: [src: 1-8]
 		Removes marker `src` from display.
 
 	ReSeT 
 		arguments: none
 		Removes all markers from display
 
-	DIFFerence [src:1-4] [dst:1-4]
-		arguments: [src:1-4] [dst:1-4]
+	DIFFerence [src:1-8] [dst:1-8]
+		arguments: [src:1-8] [dst:1-8]
 		This, unlike DELT, returns the difference data to the user.
 ```
 
@@ -377,6 +392,13 @@ MEASure:
 		arguments: [id:0-2]
 		Dumps all information related to trace data, id 0 for temporary data, 1 for stored trace, 2 for measurement.
 
+	TNF(TinySA Noise Figure) [frequency of signal]
+		arguments: [frequency of signal]
+		Measures the tinySA NOISE FIGURE at the specified frequency.
+
+	ANF(Amp Noise Figure) [frequency of signal]
+		arguments: [frequency of signal]
+		Measures the NOISE FIGURE of an amplifier.
 ```
 
 ## Config Subtree
@@ -397,4 +419,16 @@ CONFig:
 	CAPTure
 	    arguments: none
 	    Takes a screenshot of the tinySA, saves it in the current working directory
+
+	ULTRA:ON [password]
+	    arguments: password wich is : [1234]
+	    Enables ultra mode input and output upon providing password.
+
+	ULTRA:OFF
+	    arguments: none
+	    Disables ultra mode input and output.
+
+	ULTRA:START [password] [start frequency]
+	    arguments: [1234] [0-4.29 GHz]
+	    Enables ultra mode input and output and declares start frequency.
 ```
