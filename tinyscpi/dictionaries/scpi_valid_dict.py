@@ -40,7 +40,7 @@ validCommandTable = {
 
                      'FREQ:IF:AUTO': [],
                      'FREQ:IF': [['int', 433000000, 435000000]],
-                     'FREQ:IF1': [['int', 975000000, 979000000]],
+                     'FREQ:IF1': [['int', 800000000, 800000000]],
 
                      # LeVeL Subsystem
                      'LVL:ATT': [['int', 0, 31]],
@@ -145,9 +145,9 @@ validCommandTable = {
                      # CONFiguration Subsystem
                      'CONF:CAPT': [],
                      'CONF:CALC': [['str', 'off', 'minh', 'maxh', 'maxd', 'aver4' , 'aver16' , 'quasip']],
-                     'CONF:CORR:LOW': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
-                     'CONF:CORR:HIGH': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
-                     'CONF:CORR:LNA': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
+                     'CONF:CORR:LOW': [['int', 0, 19], ['int', 0, 800000000], ['float', -200.0, 13.0]],
+                     'CONF:CORR:HIGH': [['int', 0, 19], ['int', 0, 800000000], ['float', -200.0, 13.0]],
+                     'CONF:CORR:LNA': [['int', 0, 19], ['int', 0, 800000000], ['float', -200.0, 13.0]],
                      'CONF:ULTRA:ON': [['int', 4321]],
                      'CONF:ULTRA:OFF': [],
                      

@@ -20,15 +20,15 @@
 ## Frequency Subtree
 ```
 FREQuency:
-	START [0M-959M]
+	START [0M-800M]
 		arguments: A frequency between 0 and 959Mhz [0M-959M]
 		Sets starting frequency
 
-	STOP [0M-959M]
+	STOP [0M-800M]
 		arguments: A frequency between 0 and 959Mhz [0M-350M]
 		Sets stopping frequency 
 
-	CENTer [0M-959M]
+	CENTer [0M-800M]
 		arguments: A frequency between 0 and 959Mhz [0M-350M]
 		Sets the center frequency 
 
@@ -339,7 +339,7 @@ MARKer:
 		This, unlike DELT, returns the difference data to the user.
 ```
 
-## Measure Subtree
+## Measure Subtree (Commands can take 5-10 seconds to run)
 ```
 MEASure: 
 	OFF
@@ -399,6 +399,8 @@ MEASure:
 	ANF(Amp Noise Figure) [frequency of signal]
 		arguments: [frequency of signal]
 		Measures the NOISE FIGURE of an amplifier.
+
+NOTE : Reset may be needed before running measurment commands
 ```
 
 ## Config Subtree
@@ -421,10 +423,12 @@ CONFig:
 	    Takes a screenshot of the tinySA, saves it in the current working directory
 
 	ULTRA:ON [password]
-	    arguments: password which is [4321]
+	    arguments: password, can be found on https://tinysa.org/wiki/pmwiki.php?n=TinySA4.Ultra
 	    Enables ultra mode input and output upon providing password.
+		NOTE: When enabled, up to 6GHz can be measured instead of 800MHz
 
 	ULTRA:OFF
 	    arguments: none
 	    Disables ultra mode input and output.
+		NOTE: When disabled, frequencies only go up to 800MHz
 ```
