@@ -34,9 +34,9 @@ validCommandTable = {
                      'FREQ:RBW:AUTO': [],
                      'FREQ:DUMP': [],
 
-                     'FREQ:SCAN:FREQ': [['int', 0, 959000000], ['int', 0, 959000000]],
-                     'FREQ:SCAN:MEAS': [['int', 0, 959000000], ['int', 0, 959000000]],
-                     'FREQ:SCAN:STOR': [['int', 0, 959000000], ['int', 0, 959000000]],
+                     'FREQ:SCAN:FREQ': [['int', 0, 6000000000], ['int', 0, 6000000000]],
+                     'FREQ:SCAN:MEAS': [['int', 0, 6000000000], ['int', 0, 6000000000]],
+                     'FREQ:SCAN:STOR': [['int', 0, 6000000000], ['int', 0, 6000000000]],
 
                      'FREQ:IF:AUTO': [],
                      'FREQ:IF': [['int', 433000000, 435000000]],
@@ -99,7 +99,7 @@ validCommandTable = {
                      'MARK:NOIS:SET': [['int', 1, 8]],
                      'MARK:NOIS:OFF': [['int', 1, 8]],
                      'MARK:TRAKING': [['int', 1, 8]],
-                     'MARK:FREQ': [['int', 1, 8], ['int', 0, 959000000]],
+                     'MARK:FREQ': [['int', 1, 8], ['int', 0, 6000000000]],
 
                      'MARK:DELT': [['int', 1, 8], ['int', 1, 8]],
                      'MARK:DELT:OFF': [['int', 1, 8]],
@@ -119,7 +119,7 @@ validCommandTable = {
                      'MARK:SRCH:MAXR': [['int', 1, 8]],
                      'MARK:SRCH:MAXL': [['int', 1, 8]],
 
-                     'MARK:SRCH:FREQ': [['int', 1, 8], ['int', 0, 959000000]],
+                     'MARK:FREQ': [['int', 1, 8], ['int', 0, 6000000000]],
                      'MARK:DEL': [['int', 1, 8]],
                      'MARK:RST': [],
 
@@ -129,18 +129,18 @@ validCommandTable = {
                      # MEASure Subsystem
                     'MEAS:OFF': [],
                     'MEAS:DUMP': [['int', 0, 2]],
-                    'MEAS:HARM': [['int', 0, 959000000], ['int', 0, 959000000]],
-                    'MEAS:OIP3': [['int', 0, 959000000], ['int', 0, 959000000]],
-                    'MEAS:PNOIS': [['int', 0, 959000000], ['int', 0, 959000000]],
-                    'MEAS:SNR': [['int', 0, 959000000], ['int', 0, 959000000]],
+                    'MEAS:HARM': [['int', 0, 6000000000], ['int', 0, 6000000000]],
+                    'MEAS:OIP3': [['int', 0, 6000000000], ['int', 0, 6000000000]],
+                    'MEAS:PNOIS': [['int', 0, 6000000000], ['int', 0, 6000000000]],
+                    'MEAS:SNR': [['int', 0, 6000000000], ['int', 0, 6000000000]],
                     'MEAS:3DB': [],
-                    'MEAS:AM': [['int', 0, 959000000], ['int', 3000, 10000]],
-                    'MEAS:FM': [['int', 0, 959000000], ['int', 1000, 2500]],
+                    'MEAS:AM': [['int', 0, 6000000000], ['int', 3000, 10000]],
+                    'MEAS:FM': [['int', 0, 6000000000], ['int', 1000, 2500]],
                     'MEAS:THD': [],
-                    'MEAS:CHPOW': [['int', 0, 959000000], ['int', 0, 959000000]],
+                    'MEAS:CHPOW': [['int', 0, 6000000000], ['int', 0, 6000000000]],
                     'MEAS:LINE': [],
-                    'MEAS:TNF': [['int', 0, 959000000]],
-                    'MEAS:ANF': [['int', 0, 959000000]],
+                    'MEAS:TNF': [['int', 0, 6000000000]],
+                    'MEAS:ANF': [['int', 0, 6000000000]],
 
                      # CONFiguration Subsystem
                      'CONF:CAPT': [],
@@ -148,9 +148,9 @@ validCommandTable = {
                      'CONF:CORR:LOW': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
                      'CONF:CORR:HIGH': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
                      'CONF:CORR:LNA': [['int', 0, 19], ['int', 0, 959000000], ['float', -200.0, 13.0]],
-                     'CONF:ULTRA:ON': ['int', 1234],
+                     'CONF:ULTRA:ON': [['int', 4321]],
                      'CONF:ULTRA:OFF': [],
-                     'CONF:ULTRA:START': [['int', 1234], ['int', 0, 4290000000]],
+                     
 
                     }
 

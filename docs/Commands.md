@@ -421,14 +421,10 @@ CONFig:
 	    Takes a screenshot of the tinySA, saves it in the current working directory
 
 	ULTRA:ON [password]
-	    arguments: password which is [1234]
+	    arguments: password which is [4321]
 	    Enables ultra mode input and output upon providing password.
 
 	ULTRA:OFF
 	    arguments: none
 	    Disables ultra mode input and output.
-
-	ULTRA:START [password] [start frequency]
-	    arguments: [1234] [0-4.29 GHz]
-	    Enables ultra mode input and output and declares start frequency.
 ```

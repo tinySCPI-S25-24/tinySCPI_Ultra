@@ -46,6 +46,8 @@ class SCPI_Parser:
         new_args = []
         args = strs[1:]
         for arg, val in zip(args, validation):
+            if strs[0] == "CONF:ULTRA:ON":
+                return self.cmd, []
             if val[0] == 'int':
                 arg = int(arg)
                 if val[1] > arg or val[2] < arg:

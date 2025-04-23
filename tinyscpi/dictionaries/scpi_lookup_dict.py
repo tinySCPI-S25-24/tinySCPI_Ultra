@@ -137,6 +137,5 @@ SCPILookUpTable = {
     'CONF:CORR:LNA': 'correction lna',
     'CONF:ULTRA:ON': 'ultra on',
     'CONF:ULTRA:OFF': 'ultra off',
-    'CONF:ULTRA:START': 'ultra_start',
     
 }

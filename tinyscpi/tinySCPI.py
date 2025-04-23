@@ -110,7 +110,7 @@ def main():
     scan_parser.add_argument("stop_freq", type=int, help="Stop frequency in Hz.")
     scan_parser.add_argument("num_points", type=int, help="Number of points.")
     scan_parser.add_argument("filename", type=str, help="Filename to save the data.")
-
+    
     args = parser.parse_args()
 
     # Dispatch to the correct function
@@ -125,7 +125,7 @@ def main():
     elif args.command == "scan_raw_points":
         print(scan_raw_points(args.savedata, args.start_freq, args.stop_freq, args.num_points, args.filename))
     else:
-        user_input("MEAS:OFF")
+        print(user_input())
 
 if __name__ == "__main__":
     main()
