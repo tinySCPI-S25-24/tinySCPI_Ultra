@@ -48,6 +48,9 @@ ESD protected
 - If you're looking for a taste of what you're capable of with tinySCPI, see this [Example Script](https://github.com/noldono/tinySCPI/blob/main/examples/example_script.txt)
 - To see what other functions are a part of our library see the [Class Documentation](https://github.com/noldono/tinySCPI/blob/main/docs/Class_Documentation.md)
 
+7. Run WebApp.py located in Web Server Client to run the Graphical User Interface.
+
+
 ## Dependency: <a name="dependencies"></a>
 tinySCPI requires python >= 3.6, pyserial, pytest, and pytest-cov
 
