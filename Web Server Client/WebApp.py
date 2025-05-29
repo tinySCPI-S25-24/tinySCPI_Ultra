@@ -28,9 +28,7 @@ LOGIN_LOCK = os.path.join(UPLOAD_FOLDER, "login.lock")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Load password from config.json
-with open("config.json", "r") as config_file:
-    config = json.load(config_file)
-CORRECT_PASSWORD = config["password"]
+CORRECT_PASSWORD = "password"
 
 execution_count = 0
 
